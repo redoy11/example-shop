@@ -3,6 +3,7 @@ import './App.scss';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import Shelve from '../Containers/Shelve/Shelve';
+import ConnectedCart from '../Containers/Cart/Cart';
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
           <Route path="/">
             <Header />
             <Shelve />
+            <ConnectedCart />
           </Route>
         </Switch>
       </Router>
