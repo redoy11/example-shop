@@ -24,6 +24,7 @@ export const reducerName = 'shop';
 export const SET_SHOP_ITEMS = 'shop/reducer/shop/SET_SHOP_ITEMS';
 export const FETCH_SHOP_ITEMS = 'shop/reducer/shop/SET_FETCH_ITEMS';
 export const ADD_TO_CART = 'shop/reducer/shop/ADD_TO_CART';
+export const REMOVE_FROM_CART = 'shop/reducer/shop/REMOVE_FROM_CART';
 
 /** interface for SET_SHOP_ITEMS action */
 export interface SetShopItemsAction extends AnyAction {
@@ -43,11 +44,19 @@ export interface AddToCartAction extends AnyAction {
   type: typeof ADD_TO_CART;
 }
 
+/** interface for REMOVE_FROM_CART action */
+export interface RemoveFromCartAction extends AnyAction {
+  productId: string;
+  quantity: number | null;
+  type: typeof ADD_TO_CART;
+}
+
 /** Create type for reducer actions */
 export type ShopActionTypes =
   | FetchShopItemsAction
   | SetShopItemsAction
   | AddToCartAction
+  | RemoveFromCartAction
   | AnyAction;
 
 // action creators
@@ -71,13 +80,28 @@ export const fetchShopItems = (): FetchShopItemsAction => ({
 /**
  * add items to cart
  * @param {string} productId -  the product that is added
- * @param  {number} quantity - the quantity that is added to card
+ * @param  {number} quantity - the quantity that is added to cart
  * @returns {AddToCartAction} - an action to add items to cart in store
  */
 export const addToCartAction = (
   productId: string,
   quantity: number
 ): AddToCartAction => ({
+  productId,
+  quantity,
+  type: ADD_TO_CART,
+});
+
+/**
+ * removes items to cart
+ * @param {string} productId -  the product that is removed
+ * @param  {number | null} quantity - the quantity that is removed; null means remove all
+ * @returns {AddToCartAction} - an action to remove items from cart in store
+ */
+export const removeFromCartAction = (
+  productId: string,
+  quantity: number | null
+): RemoveFromCartAction => ({
   productId,
   quantity,
   type: ADD_TO_CART,
