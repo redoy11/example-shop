@@ -1,5 +1,9 @@
 import { AnyAction, Store } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
+import { ajax } from 'rxjs/ajax';
+import { mergeMap, map } from 'rxjs/operators';
+import { ofType } from 'redux-observable';
+import { Observable } from 'rxjs';
 
 /** interface for ShopItem  object */
 export interface ShopItem {
@@ -15,8 +19,10 @@ export interface ShopItem {
 export const reducerName = 'shop';
 
 // actions
+
 /** action types */
 export const SET_SHOP_ITEMS = 'shop/reducer/shop/SET_SHOP_ITEMS';
+export const FETCH_SHOP_ITEMS = 'shop/reducer/shop/SET_FETCH_ITEMS';
 
 /** interface for SET_SHOP_ITEMS action */
 export interface SetShopItemsAction extends AnyAction {
@@ -24,8 +30,16 @@ export interface SetShopItemsAction extends AnyAction {
   type: typeof SET_SHOP_ITEMS;
 }
 
+/** interface for FETCH_SHOP_ITEMS action */
+export interface FetchShopItemsAction extends AnyAction {
+  type: typeof FETCH_SHOP_ITEMS;
+}
+
 /** Create type for reducer actions */
-export type ShopActionTypes = SetShopItemsAction | AnyAction;
+export type ShopActionTypes =
+  | FetchShopItemsAction
+  | SetShopItemsAction
+  | AnyAction;
 
 // action creators
 
@@ -37,6 +51,34 @@ export const setShopItems = (items: ShopItem[]): SetShopItemsAction => ({
   items,
   type: SET_SHOP_ITEMS,
 });
+
+/** fetch shop items from the server
+ * @returns {FetchShopItemsAction} - an action to fetch items from server
+ */
+export const fetchShopItems = (): FetchShopItemsAction => ({
+  type: FETCH_SHOP_ITEMS,
+});
+
+// epics
+
+/**
+ * rxjs based epic to fetch shop items list from server
+ * @param {Observable<ShopActionTypes>} action$ - a series of actions observables
+ * @returns {Observable<Exclude<ShopActionTypes, FetchShopItemsAction>>} - an action observable other than the FETCH_SHOP_ITEMS
+ */
+export const fetchShopItemsEpic = (
+  action$: Observable<ShopActionTypes>
+): Observable<Exclude<ShopActionTypes, FetchShopItemsAction>> =>
+  action$.pipe(
+    ofType(FETCH_SHOP_ITEMS),
+    mergeMap(() =>
+      ajax
+        .getJSON(
+          `https://gist.githubusercontent.com/naieem/c138ff1f12847b2a1b8ad85866426d3d/raw/037825eee126d589ab3e1fff6c3d0119f33f3b5b/Products`
+        )
+        .pipe(map((response) => setShopItems(response as ShopItem[])))
+    )
+  );
 
 // the reducer
 
