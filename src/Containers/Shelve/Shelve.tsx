@@ -7,7 +7,9 @@ import {
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
-import { TextField, MenuItem } from '@material-ui/core';
+import { TextField, MenuItem, Typography } from '@material-ui/core';
+import ShelveItem from '../ShelveItem/ShelveItem';
+import './Shelve.scss';
 
 /** Interface to describe Shelve props */
 interface ShelveProps {
@@ -58,25 +60,29 @@ const Shelve: React.FC<ShelveProps> = (props: ShelveProps) => {
     setOrderAsc(event.target.value === 'asc' ? true : false);
 
   return (
-    <div>
-      <TextField
-        select
-        label="Select"
-        value={isOrderAsc ? 'asc' : 'desc'}
-        onChange={handleChange}
-      >
-        {ORDER_OPTIONS.map((option: OrderOption) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
+    <div className="Shelve-container">
+      <div className="Shelve-header">
+        <Typography variant="body2">
+          Showing {showcasedItems.length} out of {showcasedItems.length} items
+        </Typography>
+        <TextField
+          select
+          label=""
+          value={isOrderAsc ? 'asc' : 'desc'}
+          onChange={handleChange}
+        >
+          {ORDER_OPTIONS.map((option: OrderOption) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
+      <div className="Shelve-body">
+        {showcasedItems.map((item) => (
+          <ShelveItem key={item._id} {...item} />
         ))}
-      </TextField>
-      {showcasedItems.map((item) => (
-        <>
-          {item.price}
-          <br />
-        </>
-      ))}
+      </div>
     </div>
   );
 };
