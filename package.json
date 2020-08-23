@@ -20,6 +20,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
+    "rxjs": "^6.6.2",
     "seamless-immutable": "^7.1.4",
     "typescript": "~3.7.2"
   },
