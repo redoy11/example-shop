@@ -23,6 +23,7 @@ export const reducerName = 'shop';
 /** action types */
 export const SET_SHOP_ITEMS = 'shop/reducer/shop/SET_SHOP_ITEMS';
 export const FETCH_SHOP_ITEMS = 'shop/reducer/shop/SET_FETCH_ITEMS';
+export const ADD_TO_CART = 'shop/reducer/shop/ADD_TO_CART';
 
 /** interface for SET_SHOP_ITEMS action */
 export interface SetShopItemsAction extends AnyAction {
@@ -35,10 +36,18 @@ export interface FetchShopItemsAction extends AnyAction {
   type: typeof FETCH_SHOP_ITEMS;
 }
 
+/** interface for ADD_TO_CART action */
+export interface AddToCartAction extends AnyAction {
+  productId: string;
+  quantity: number;
+  type: typeof ADD_TO_CART;
+}
+
 /** Create type for reducer actions */
 export type ShopActionTypes =
   | FetchShopItemsAction
   | SetShopItemsAction
+  | AddToCartAction
   | AnyAction;
 
 // action creators
@@ -57,6 +66,21 @@ export const setShopItems = (items: ShopItem[]): SetShopItemsAction => ({
  */
 export const fetchShopItems = (): FetchShopItemsAction => ({
   type: FETCH_SHOP_ITEMS,
+});
+
+/**
+ * add items to cart
+ * @param {string} productId -  the product that is added
+ * @param  {number} quantity - the quantity that is added to card
+ * @returns {AddToCartAction} - an action to add items to cart in store
+ */
+export const addToCartAction = (
+  productId: string,
+  quantity: number
+): AddToCartAction => ({
+  productId,
+  quantity,
+  type: ADD_TO_CART,
 });
 
 // epics
