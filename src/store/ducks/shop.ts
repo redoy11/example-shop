@@ -182,3 +182,12 @@ export function getQuantityById(
 ): ShopItem | null {
   return (state as any)[reducerName].cart[productId] || 0;
 }
+
+/**
+ * returns the cart object value
+ * @param state - the redux store
+ * @returns { any } - the current object in the cart property of the store
+ */
+export function getCartValues(state: Partial<Store>): any {
+  return (state as any)[reducerName].cart;
+}
