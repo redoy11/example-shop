@@ -6,6 +6,8 @@ import {
 } from '../../store/ducks/shop';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
+import lodash from 'lodash';
+import { TextField, MenuItem } from '@material-ui/core';
 
 /** Interface to describe Shelve props */
 interface ShelveProps {
@@ -13,17 +15,65 @@ interface ShelveProps {
   fetchShopItemsActionCreator: typeof fetchShopItems;
 }
 
+/** Interface to describe items order option */
+interface OrderOption {
+  label: string;
+  value: 'asc' | 'desc';
+}
+
+/** Available item order option */
+const ORDER_OPTIONS: OrderOption[] = [
+  { label: 'Sort by price high to low', value: 'desc' },
+  { label: 'Sort by price low to high', value: 'asc' },
+];
+
 const Shelve: React.FC<ShelveProps> = (props: ShelveProps) => {
   const { items, fetchShopItemsActionCreator } = props;
+
+  // component based states
+  /** showcasedItems are items that are viewable to shelves */
+  const [showcasedItems, setShowcasedItems] = React.useState<ShopItem[]>([]);
+  /** manages the order state of items based on price property*/
+  const [isOrderAsc, setOrderAsc] = React.useState<boolean>(false);
+
+  /** fetch the shop items from server on load */
   React.useEffect(() => {
     fetchShopItemsActionCreator();
   }, []);
 
+  /** update the showcasedItems based on changes of items or price order  */
+  React.useEffect(() => {
+    if (isOrderAsc) {
+      setShowcasedItems(lodash.orderBy(items, ['price'], ['asc']));
+    } else {
+      setShowcasedItems(lodash.orderBy(items, ['price'], ['desc']));
+    }
+  }, [items, isOrderAsc]);
+
+  /**
+   * Updates order option based on selected option
+   * @param {React.ChangeEvent<HTMLInputElement>} event - order option change event
+   */
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setOrderAsc(event.target.value === 'asc' ? true : false);
+
   return (
     <div>
-      {items.map((item) => (
+      <TextField
+        select
+        label="Select"
+        value={isOrderAsc ? 'asc' : 'desc'}
+        onChange={handleChange}
+      >
+        {ORDER_OPTIONS.map((option: OrderOption) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      {showcasedItems.map((item) => (
         <>
-          {item.title}
+          {item.price}
           <br />
         </>
       ))}
