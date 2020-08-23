@@ -24,7 +24,6 @@ export const reducerName = 'shop';
 export const SET_SHOP_ITEMS = 'shop/reducer/shop/SET_SHOP_ITEMS';
 export const FETCH_SHOP_ITEMS = 'shop/reducer/shop/SET_FETCH_ITEMS';
 export const ADD_TO_CART = 'shop/reducer/shop/ADD_TO_CART';
-export const REMOVE_FROM_CART = 'shop/reducer/shop/REMOVE_FROM_CART';
 
 /** interface for SET_SHOP_ITEMS action */
 export interface SetShopItemsAction extends AnyAction {
@@ -44,19 +43,11 @@ export interface AddToCartAction extends AnyAction {
   type: typeof ADD_TO_CART;
 }
 
-/** interface for REMOVE_FROM_CART action */
-export interface RemoveFromCartAction extends AnyAction {
-  productId: string;
-  quantity: number | null;
-  type: typeof ADD_TO_CART;
-}
-
 /** Create type for reducer actions */
 export type ShopActionTypes =
   | FetchShopItemsAction
   | SetShopItemsAction
   | AddToCartAction
-  | RemoveFromCartAction
   | AnyAction;
 
 // action creators
@@ -92,21 +83,6 @@ export const addToCartAction = (
   type: ADD_TO_CART,
 });
 
-/**
- * removes items to cart
- * @param {string} productId -  the product that is removed
- * @param  {number | null} quantity - the quantity that is removed; null means remove all
- * @returns {AddToCartAction} - an action to remove items from cart in store
- */
-export const removeFromCartAction = (
-  productId: string,
-  quantity: number | null
-): RemoveFromCartAction => ({
-  productId,
-  quantity,
-  type: ADD_TO_CART,
-});
-
 // epics
 
 /**
@@ -133,14 +109,17 @@ export const fetchShopItemsEpic = (
 /** interface for shop state in redux store */
 interface ShopState {
   shopItems: ShopItem[];
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  cart: object;
 }
 
 /** Create an immutable shop state */
-export type ImmutableShopState = SeamlessImmutable.ImmutableObject<ShopState>;
+export type ImmutableShopState = SeamlessImmutable.Immutable<ShopState>;
 
 /** initial shop state */
 const initialState: ImmutableShopState = SeamlessImmutable({
   shopItems: [],
+  cart: {},
 });
 
 /** the shop reducer function */
@@ -151,7 +130,16 @@ export default function reducer(
   switch (action.type) {
     case SET_SHOP_ITEMS:
       return SeamlessImmutable({
+        ...state,
         shopItems: action.items,
+      });
+    case ADD_TO_CART:
+      return SeamlessImmutable({
+        ...state,
+        cart: {
+          ...state.cart,
+          [action.productId]: action.quantity,
+        },
       });
     default:
       return state;
