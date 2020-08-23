@@ -2,7 +2,7 @@ import { AnyAction, Store } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
 
 /** interface for ShopItem  object */
-interface ShopItem {
+export interface ShopItem {
   _id: string;
   title: string;
   description: string;
