@@ -179,7 +179,7 @@ export function getShopItemById(
 export function getQuantityById(
   state: Partial<Store>,
   productId: string
-): ShopItem | null {
+): number {
   return (state as any)[reducerName].cart[productId] || 0;
 }
 
