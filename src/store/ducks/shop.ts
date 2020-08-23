@@ -4,6 +4,7 @@ import { ajax } from 'rxjs/ajax';
 import { mergeMap, map } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import { Observable } from 'rxjs';
+import lodash from 'lodash';
 
 /** interface for ShopItem  object */
 export interface ShopItem {
@@ -154,4 +155,17 @@ export default function reducer(
  */
 export function getAllShopItems(state: Partial<Store>): ShopItem[] {
   return (state as any)[reducerName].shopItems;
+}
+
+/**
+ * returns the shop item by product id; otherwise null
+ * @param {Partial<Store>} state - the redux store
+ * @param {string} productId - the product id
+ * @returns { ShopItem | null } - the product id if matched; otherwise null
+ */
+export function getShopItemById(
+  state: Partial<Store>,
+  productId: string
+): ShopItem | null {
+  return lodash.find((state as any)[reducerName].shopItems, { _id: productId });
 }
