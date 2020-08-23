@@ -1,6 +1,11 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
 import SeamlessImmutable from 'seamless-immutable';
-import shop, { reducerName as shopReducer } from './ducks/shop';
+import { combineEpics } from 'redux-observable';
+import { createEpicMiddleware } from 'redux-observable';
+import shop, {
+  reducerName as shopReducer,
+  fetchShopItemsEpic,
+} from './ducks/shop';
 
 // reducers
 
@@ -13,14 +18,32 @@ defaultReducers[shopReducer] = shop;
 /** Create reducers from default reducers obj */
 const reducers = combineReducers(defaultReducers);
 
+// epics
+
+/** Create root epics */
+export const rootEpic = combineEpics(fetchShopItemsEpic);
+
+// middlewares
+
+/** Create the epic middleware */
+const epicMiddleware = createEpicMiddleware();
+
+// Redux Dev Tools
+
+/** Create composer for redux dev tools */
+const composeEnhancers =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 // store
 
 /** The initial store */
 const store = createStore(
   reducers,
   SeamlessImmutable({}),
-  (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-    (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(epicMiddleware))
 );
+
+/** Start the epic middleware */
+epicMiddleware.run(rootEpic);
 
 export default store;
