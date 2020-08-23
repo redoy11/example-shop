@@ -169,3 +169,16 @@ export function getShopItemById(
 ): ShopItem | null {
   return lodash.find((state as any)[reducerName].shopItems, { _id: productId });
 }
+
+/**
+ * returns the shop item quantity in cart
+ * @param {Partial<Store>} state - the redux store
+ * @param {string} productId - the product id
+ * @returns { number } - the quantity
+ */
+export function getQuantityById(
+  state: Partial<Store>,
+  productId: string
+): ShopItem | null {
+  return (state as any)[reducerName].cart[productId] || 0;
+}
