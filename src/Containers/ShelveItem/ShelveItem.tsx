@@ -1,5 +1,9 @@
 import React from 'react';
-import { ShopItem } from '../../store/ducks/shop';
+import {
+  ShopItem,
+  addToCartAction,
+  getQuantityById,
+} from '../../store/ducks/shop';
 import {
   Card,
   CardActionArea,
@@ -10,12 +14,29 @@ import {
   Button,
 } from '@material-ui/core';
 import './ShelveItem.scss';
+import { Store } from 'redux';
+import { connect } from 'react-redux';
 
-/** type to describe Shelve Item props */
-type ShelveItemProps = ShopItem;
+/** interface to describe Shelve Item props */
+interface ShelveItemProps extends ShopItem {
+  cartCount: number;
+  addToCartActionCreator: typeof addToCartAction;
+}
 
 const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
-  const { title, price, picture } = props;
+  const {
+    _id,
+    title,
+    price,
+    picture,
+    addToCartActionCreator,
+    cartCount,
+  } = props;
+
+  const addToCartHandler = () => {
+    addToCartActionCreator(_id, cartCount + 1);
+  };
+
   return (
     <Card className="ShelveItem-card">
       <CardActionArea>
@@ -34,7 +55,7 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button onClick={addToCartHandler} size="small" color="primary">
           Add to cart
         </Button>
       </CardActions>
@@ -42,4 +63,33 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
   );
 };
 
-export default ShelveItem;
+/** Connect the component to the store */
+
+/** Interface to describe props from mapStateToProps */
+interface DispatchedStateProps {
+  cartCount: number;
+}
+
+/** Map props to state  */
+const mapStateToProps = (
+  state: Partial<Store>,
+  parentProps: any
+): DispatchedStateProps => {
+  const result = {
+    cartCount: getQuantityById(state, parentProps._id),
+  };
+  return result;
+};
+
+/** Map props to actions */
+const mapDispatchToProps = {
+  addToCartActionCreator: addToCartAction,
+};
+
+/** Connect ShelveItem to the redux store */
+const ConnectedShelveItem = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShelveItem);
+
+export default ConnectedShelveItem;
