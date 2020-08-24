@@ -51,6 +51,16 @@ const Product: React.FC<ProductProps> = (props: ProductProps) => {
               <Typography variant="h6" color="textSecondary" component="p">
                 $ {item.price}
               </Typography>
+              {count === item.stock && (
+                <Typography
+                  style={{ color: 'red' }}
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                >
+                  Out of Stock
+                </Typography>
+              )}
               <Order
                 stock={item.stock}
                 cartCount={count}
