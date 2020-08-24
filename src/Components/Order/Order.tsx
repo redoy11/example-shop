@@ -12,10 +12,11 @@ interface OrderProps {
   setHandler: (value: number) => void;
   cartCount: number;
   stock: number;
+  withoutLabel?: boolean;
 }
 
 const Order: React.FC<OrderProps> = (props: OrderProps) => {
-  const { stock, cartCount, setHandler } = props;
+  const { stock, cartCount, setHandler, withoutLabel } = props;
   const [count, setCount] = React.useState<number>(cartCount);
   const freeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const requestedValue = parseInt(event.target.value);
@@ -61,8 +62,10 @@ const Order: React.FC<OrderProps> = (props: OrderProps) => {
             component="p"
             className="Order-label"
           >
-            <Icon className="cart-icon">add_shopping_cart</Icon>{' '}
-            <div>Added</div>
+            {!withoutLabel && (
+              <Icon className="cart-icon">add_shopping_cart</Icon>
+            )}{' '}
+            {!withoutLabel && <div>Added</div>}
             <TextField
               className="Order-count"
               type="number"
