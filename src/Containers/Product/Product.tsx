@@ -10,17 +10,18 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import {
   Typography,
-  CardActionArea,
   Card,
   CardMedia,
   CardContent,
-  CardActions,
-  Button,
+  Tabs,
+  Tab,
+  Icon,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import withCart from '../../hocs/withCart/withCart';
 import withHeader from '../../hocs/withHeader/withHeader';
 import withProductId from '../../hocs/withProductId/withProductId';
+import Order from '../../Components/Order/Order';
 
 interface ProductProps {
   id: string;
@@ -33,49 +34,46 @@ const Product: React.FC<ProductProps> = (props: ProductProps) => {
   const { count, item, addToCartActionCreator } = props;
   return (
     <>
-      <Link to="/">Back</Link>
+      <Link className="back-btn" to="/">
+        <Icon> keyboard_backspace_icon</Icon> Return to List
+      </Link>
       {item && (
-        <Card className="ProductItem-card">
-          <CardActionArea>
+        <React.Fragment>
+          <Card className="Product-card">
             <CardMedia
-              className="ProductItem-media"
+              className="Product-media"
               image={item.picture}
             ></CardMedia>
-            <CardContent className="ProductItem-content">
+            <CardContent className="Product-content">
               <Typography gutterBottom variant="h5" component="p">
                 {item.title}
               </Typography>
               <Typography variant="h6" color="textSecondary" component="p">
                 $ {item.price}
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {item.description}
-              </Typography>
+              <Order
+                stock={item.stock}
+                cartCount={count}
+                setHandler={(value: number) =>
+                  addToCartActionCreator(item._id, value)
+                }
+              />
             </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button
-              onClick={() => {
-                addToCartActionCreator(item._id, count + 1);
-              }}
-              disabled={count === item.stock}
-              size="small"
-              color="primary"
+          </Card>
+          <div className="Product-tab-section">
+            <Tabs className="Product-tabs">
+              <Tab className="Product-tab" label="Description" />
+            </Tabs>
+            <Typography
+              className="Product-tab-content"
+              variant="body2"
+              color="textSecondary"
+              component="p"
             >
-              Add to cart
-            </Button>
-            {count === item.stock && (
-              <Typography
-                style={{ color: 'red' }}
-                variant="body2"
-                color="textSecondary"
-                component="p"
-              >
-                Out of Stock
-              </Typography>
-            )}
-          </CardActions>
-        </Card>
+              {item.description}
+            </Typography>
+          </div>
+        </React.Fragment>
       )}
     </>
   );
