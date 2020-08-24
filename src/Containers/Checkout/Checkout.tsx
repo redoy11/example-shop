@@ -10,7 +10,6 @@ import { Store } from 'redux';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
 import {
-  Typography,
   Table,
   TableHead,
   TableRow,
