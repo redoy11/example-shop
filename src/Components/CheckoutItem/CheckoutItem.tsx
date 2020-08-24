@@ -59,7 +59,7 @@ const CheckoutItem: React.FC<CheckoutItemProps> = (
           </Typography>
         )}
       </TableCell>
-      <TableCell align="right">{price * count}</TableCell>
+      <TableCell align="right">$ {price * count}</TableCell>
     </TableRow>
   );
 };
