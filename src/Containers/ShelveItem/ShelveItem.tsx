@@ -31,6 +31,7 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
     picture,
     addToCartActionCreator,
     cartCount,
+    stock,
   } = props;
 
   const addToCartHandler = () => {
@@ -55,9 +56,24 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button onClick={addToCartHandler} size="small" color="primary">
+        <Button
+          onClick={addToCartHandler}
+          disabled={cartCount === stock}
+          size="small"
+          color="primary"
+        >
           Add to cart
         </Button>
+        {cartCount === stock && (
+          <Typography
+            style={{ color: 'red' }}
+            variant="body2"
+            color="textSecondary"
+            component="p"
+          >
+            Out of Stock
+          </Typography>
+        )}
       </CardActions>
     </Card>
   );
