@@ -10,6 +10,8 @@ import lodash from 'lodash';
 import { TextField, MenuItem, Typography } from '@material-ui/core';
 import ShelveItem from '../ShelveItem/ShelveItem';
 import './Shelve.scss';
+import withCart from '../../hocs/withCart/withCart';
+import withHeader from '../../hocs/withHeader/withHeader';
 
 /** Interface to describe Shelve props */
 interface ShelveProps {
@@ -110,4 +112,4 @@ const mapDispatchToProps = {
 /** Connect Shelve to the redux store */
 const ConnectedShelve = connect(mapStateToProps, mapDispatchToProps)(Shelve);
 
-export default ConnectedShelve;
+export default withCart(withHeader(ConnectedShelve));
