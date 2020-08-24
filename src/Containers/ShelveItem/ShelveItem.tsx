@@ -11,12 +11,12 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Button,
 } from '@material-ui/core';
 import './ShelveItem.scss';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Order from '../../Components/Order/Order';
 
 /** interface to describe Shelve Item props */
 interface ShelveItemProps extends ShopItem {
@@ -35,8 +35,8 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
     stock,
   } = props;
 
-  const addToCartHandler = () => {
-    addToCartActionCreator(_id, cartCount + 1);
+  const setHandler = (value: number) => {
+    addToCartActionCreator(_id, value);
   };
 
   return (
@@ -49,34 +49,32 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
             title="Contemplative Reptile"
           ></CardMedia>
           <CardContent className="ShelveItem-content">
-            <Typography gutterBottom variant="body1" component="p">
+            <Typography
+              gutterBottom
+              color="textSecondary"
+              variant="body2"
+              component="p"
+            >
               {title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {price}
+            <Typography variant="h6" component="p">
+              $ {price}
             </Typography>
+            {cartCount === stock && (
+              <Typography
+                style={{ color: 'red' }}
+                variant="body2"
+                color="textSecondary"
+                component="p"
+              >
+                Out of Stock
+              </Typography>
+            )}
           </CardContent>
         </CardActionArea>
       </Link>
       <CardActions>
-        <Button
-          onClick={addToCartHandler}
-          disabled={cartCount === stock}
-          size="small"
-          color="primary"
-        >
-          Add to cart
-        </Button>
-        {cartCount === stock && (
-          <Typography
-            style={{ color: 'red' }}
-            variant="body2"
-            color="textSecondary"
-            component="p"
-          >
-            Out of Stock
-          </Typography>
-        )}
+        <Order stock={stock} cartCount={cartCount} setHandler={setHandler} />
       </CardActions>
     </Card>
   );
