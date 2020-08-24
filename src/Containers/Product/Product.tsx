@@ -18,9 +18,10 @@ import {
   CardActions,
   Button,
 } from '@material-ui/core';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import withCart from '../../hocs/withCart/withCart';
 import withHeader from '../../hocs/withHeader/withHeader';
+import withProductId from '../../hocs/withProductId/withProductId';
 
 interface ProductProps {
   id: string;
@@ -121,9 +122,4 @@ const mapDispatchToProps = {
 /** Connect Product to the redux store */
 const ConnectedProduct = connect(mapStateToProps, mapDispatchToProps)(Product);
 
-const ProductWithRouter: React.FC = () => {
-  const { id } = useParams();
-  return <ConnectedProduct id={id} />;
-};
-
-export default withCart(withHeader(ProductWithRouter));
+export default withCart(withHeader(withProductId(ConnectedProduct)));
