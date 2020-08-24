@@ -5,7 +5,6 @@ import {
   addToCartAction,
   getQuantityById,
   getShopItemById,
-  fetchShopItems,
 } from '../../store/ducks/shop';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -28,19 +27,10 @@ interface ProductProps {
   count: number;
   item: ShopItem | null;
   addToCartActionCreator: typeof addToCartAction;
-  fetchShopItemsActionCreator: typeof fetchShopItems;
 }
 
 const Product: React.FC<ProductProps> = (props: ProductProps) => {
-  const {
-    count,
-    item,
-    fetchShopItemsActionCreator,
-    addToCartActionCreator,
-  } = props;
-  React.useEffect(() => {
-    fetchShopItemsActionCreator();
-  }, []);
+  const { count, item, addToCartActionCreator } = props;
   return (
     <>
       <Link to="/">Back</Link>
@@ -116,7 +106,6 @@ const mapStateToProps = (
 /** Map props to actions */
 const mapDispatchToProps = {
   addToCartActionCreator: addToCartAction,
-  fetchShopItemsActionCreator: fetchShopItems,
 };
 
 /** Connect Product to the redux store */

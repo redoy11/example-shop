@@ -3,8 +3,19 @@ import './App.scss';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import Shelve from '../Containers/Shelve/Shelve';
 import ConnectedProduct from '../Containers/Product/Product';
+import { fetchShopItems } from '../store/ducks/shop';
+import { connect } from 'react-redux';
 
-const App: React.FC = () => {
+interface AppProps {
+  fetchShopItemsActionCreator: typeof fetchShopItems;
+}
+
+const App: React.FC<AppProps> = (props: AppProps) => {
+  const { fetchShopItemsActionCreator } = props;
+  /** fetch the shop items from server on load */
+  React.useEffect(() => {
+    fetchShopItemsActionCreator();
+  }, []);
   return (
     <React.Fragment>
       <Router basename="/">
@@ -21,4 +32,14 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+/** Connect the component to the store */
+
+/** Map props to actions */
+const mapDispatchToProps = {
+  fetchShopItemsActionCreator: fetchShopItems,
+};
+
+/** Connect App to the redux store */
+const ConnectedApp = connect(null, mapDispatchToProps)(App);
+
+export default ConnectedApp;

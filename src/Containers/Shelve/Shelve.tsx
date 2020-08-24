@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  getAllShopItems,
-  ShopItem,
-  fetchShopItems,
-} from '../../store/ducks/shop';
+import { getAllShopItems, ShopItem } from '../../store/ducks/shop';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
@@ -16,7 +12,6 @@ import withHeader from '../../hocs/withHeader/withHeader';
 /** Interface to describe Shelve props */
 interface ShelveProps {
   items: ShopItem[];
-  fetchShopItemsActionCreator: typeof fetchShopItems;
 }
 
 /** Interface to describe items order option */
@@ -32,18 +27,13 @@ const ORDER_OPTIONS: OrderOption[] = [
 ];
 
 const Shelve: React.FC<ShelveProps> = (props: ShelveProps) => {
-  const { items, fetchShopItemsActionCreator } = props;
+  const { items } = props;
 
   // component based states
   /** showcasedItems are items that are viewable to shelves */
   const [showcasedItems, setShowcasedItems] = React.useState<ShopItem[]>([]);
   /** manages the order state of items based on price property*/
   const [isOrderAsc, setOrderAsc] = React.useState<boolean>(false);
-
-  /** fetch the shop items from server on load */
-  React.useEffect(() => {
-    fetchShopItemsActionCreator();
-  }, []);
 
   /** update the showcasedItems based on changes of items or price order  */
   React.useEffect(() => {
@@ -105,9 +95,7 @@ const mapStateToProps = (state: Partial<Store>): DispatchedStateProps => {
 };
 
 /** Map props to actions */
-const mapDispatchToProps = {
-  fetchShopItemsActionCreator: fetchShopItems,
-};
+const mapDispatchToProps = {};
 
 /** Connect Shelve to the redux store */
 const ConnectedShelve = connect(mapStateToProps, mapDispatchToProps)(Shelve);
