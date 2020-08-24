@@ -5,6 +5,7 @@ import Shelve from '../Containers/Shelve/Shelve';
 import ConnectedProduct from '../Containers/Product/Product';
 import { fetchShopItems } from '../store/ducks/shop';
 import { connect } from 'react-redux';
+import ConnectedCheckout from '../Containers/Checkout/Checkout';
 
 interface AppProps {
   fetchShopItemsActionCreator: typeof fetchShopItems;
@@ -22,6 +23,9 @@ const App: React.FC<AppProps> = (props: AppProps) => {
         <Switch>
           <Route path="/product/:id">
             <ConnectedProduct />
+          </Route>
+          <Route path="/checkout">
+            <ConnectedCheckout />
           </Route>
           <Route path="/">
             <Shelve />

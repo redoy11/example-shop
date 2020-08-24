@@ -15,8 +15,10 @@ import {
   Divider,
   ListItem,
   ListItemText,
+  Button,
 } from '@material-ui/core';
 import CartItem from '../../Components/CartItem/CartItem';
+import { Link } from 'react-router-dom';
 
 interface CartProps {
   items: ShopItem[];
@@ -49,6 +51,11 @@ const Cart: React.FC<CartProps> = (props: CartProps) => {
           <Divider />
           <ListItem>
             <ListItemText primary={'Subtotal $ ' + total} secondary="" />
+          </ListItem>
+          <ListItem>
+            <Link to="/checkout">
+              <Button> Proceed to Checkout </Button>
+            </Link>
           </ListItem>
         </List>
       )}

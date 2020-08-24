@@ -26,7 +26,7 @@ const CartItem: React.FC<CartItemProps> = (props: CartItemProps) => {
       <ListItemAvatar>
         <Avatar variant="square" alt="" src={picture} />
       </ListItemAvatar>
-      <ListItemText primary={title} secondary={`${count} x Tk ${price}`} />
+      <ListItemText primary={title} secondary={`${count} x $ ${price}`} />
       <ListItemSecondaryAction>
         <IconButton edge="start" aria-label="delete" onClick={removeHandler}>
           <Icon>clear</Icon>
