@@ -5,6 +5,7 @@
     justify-content: space-evenly !important;
     align-items: center;
     width: 100%;
+    min-width: 70 !important;
   }
 
   &-label {
@@ -23,7 +24,6 @@
       color: darkgreen;
     }
   }
-
 }
 
 .cart-icon {
