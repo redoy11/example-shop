@@ -1,0 +1,32 @@
+.Order {
+  &-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-evenly !important;
+    align-items: center;
+    width: 100%;
+  }
+
+  &-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: darkgreen !important;
+  }
+
+  &-count  .MuiInput-formControl {
+    max-width: 40px !important;
+    margin: 0px 5px;
+
+    & input {
+      text-align: center;
+      color: darkgreen;
+    }
+  }
+
+}
+
+.cart-icon {
+  display:inline-flex;
+  vertical-align: top;
+}
