@@ -1,6 +1,7 @@
 .Checkout {
   &-table {
     min-width: 800px !important;
+    overflow: auto;
   }
 
   &-items-section {
@@ -17,6 +18,7 @@
 
   &-payout-section {
     margin-top: 50px;
+    margin-bottom: 50px;
     position: absolute;
     right: 18%;
     max-width: 300px !important;
