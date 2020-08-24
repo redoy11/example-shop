@@ -54,7 +54,9 @@ const Cart: React.FC<CartProps> = (props: CartProps) => {
           </ListItem>
           <ListItem>
             <Link to="/checkout">
-              <Button> Proceed to Checkout </Button>
+              <Button variant="contained" color="primary">
+                Proceed to Checkout
+              </Button>
             </Link>
           </ListItem>
         </List>
