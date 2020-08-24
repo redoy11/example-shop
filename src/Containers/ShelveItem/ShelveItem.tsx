@@ -16,6 +16,7 @@ import {
 import './ShelveItem.scss';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 /** interface to describe Shelve Item props */
 interface ShelveItemProps extends ShopItem {
@@ -40,21 +41,23 @@ const ShelveItem: React.FC<ShelveItemProps> = (props: ShelveItemProps) => {
 
   return (
     <Card className="ShelveItem-card">
-      <CardActionArea>
-        <CardMedia
-          className="ShelveItem-media"
-          image={picture}
-          title="Contemplative Reptile"
-        ></CardMedia>
-        <CardContent className="ShelveItem-content">
-          <Typography gutterBottom variant="body1" component="p">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {price}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <Link to={`/product/${_id}`}>
+        <CardActionArea>
+          <CardMedia
+            className="ShelveItem-media"
+            image={picture}
+            title="Contemplative Reptile"
+          ></CardMedia>
+          <CardContent className="ShelveItem-content">
+            <Typography gutterBottom variant="body1" component="p">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {price}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Link>
       <CardActions>
         <Button
           onClick={addToCartHandler}
