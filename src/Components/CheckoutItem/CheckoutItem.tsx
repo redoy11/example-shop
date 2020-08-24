@@ -6,6 +6,7 @@ import {
   Icon,
   TableRow,
   TableCell,
+  Typography,
 } from '@material-ui/core';
 import Order from '../Order/Order';
 import './CheckoutItem.scss';
@@ -47,6 +48,16 @@ const CheckoutItem: React.FC<CheckoutItemProps> = (
           setHandler={setHandler}
           withoutLabel={true}
         />
+        {count === stock && (
+          <Typography
+            style={{ color: 'red' }}
+            variant="body2"
+            color="textSecondary"
+            component="p"
+          >
+            Out of Stock
+          </Typography>
+        )}
       </TableCell>
       <TableCell align="right">{price * count}</TableCell>
     </TableRow>
