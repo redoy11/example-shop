@@ -9,7 +9,14 @@ import {
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
-import { List } from '@material-ui/core';
+import {
+  List,
+  Typography,
+  Divider,
+  ListItem,
+  ListItemText,
+} from '@material-ui/core';
+import CartItem from '../../Components/CartItem/CartItem';
 
 interface CartProps {
   items: ShopItem[];
@@ -18,21 +25,40 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = (props: CartProps) => {
-  const { cartObject, items } = props;
+  const { cartObject, items, addToCartActionCreator } = props;
   const cartObjectKeys = lodash.keys(cartObject);
+  let total = 0;
   const cartItems = cartObjectKeys
     .map((pid) => ({
       ...(lodash.find(items, { _id: pid }) || {}),
-      value: cartObject[pid],
+      count: cartObject[pid],
+      addToCartHandler: addToCartActionCreator,
     }))
-    .filter((item) => item.value !== 0);
+    .filter((item) => item.count !== 0);
+  cartItems.forEach((item: any) => (total = total + item.count * item.price));
   return (
-    <div>
-      <List className="list-container">
-        {cartItems.map((item: any) => (
-          <div key={item._id}>{item.title}</div>
-        ))}
-      </List>
+    <div className="Cart-container">
+      <Typography variant="body2"> Cart </Typography>
+      {cartItems.length > 0 && (
+        <List className="list-container">
+          {cartItems.map((item: any) => (
+            <div key={item._id}>
+              <CartItem {...item} />
+            </div>
+          ))}
+          <Divider />
+          <ListItem>
+            <ListItemText primary={'Subtotal $ ' + total} secondary="" />
+          </ListItem>
+        </List>
+      )}
+      {cartItems.length <= 0 && (
+        <List>
+          <ListItem>
+            <ListItemText primary="No items to display" secondary="" />
+          </ListItem>
+        </List>
+      )}
     </div>
   );
 };

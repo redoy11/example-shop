@@ -1,0 +1,9 @@
+.Cart {
+  &-container {
+    max-width: 300px;
+    position: sticky;
+    top: 0;
+    position: -webkit-sticky;
+    padding: 20px 5px;
+  }
+}
