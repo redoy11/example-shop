@@ -18,9 +18,11 @@ import {
   TableBody,
   TableContainer,
   Paper,
+  Icon,
 } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import CheckoutItem from '../../Components/CheckoutItem/CheckoutItem';
+import withHeader from '../../hocs/withHeader/withHeader';
 
 interface CheckoutProps {
   items: ShopItem[];
@@ -42,30 +44,68 @@ const Checkout: React.FC<CheckoutProps> = (props: CheckoutProps) => {
   cartItems.forEach((item: any) => (total = total + item.count * item.price));
   return (
     <div className="Checkout-container">
-      <Typography variant="body2"> Checkout </Typography>
+      <Link className="back-btn" to="/">
+        <Icon> keyboard_backspace_icon</Icon> Return to List
+      </Link>
       {cartItems.length > 0 && (
-        <div className="Checkout-items-container">
-          <div className="Checkout-items-section">
-            <TableContainer className="Checkout-table" component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell align="center">Product</TableCell>
-                    <TableCell align="right">Price</TableCell>
-                    <TableCell align="center">Quantity</TableCell>
-                    <TableCell align="right">Subtotal</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {cartItems.map((item: any) => (
-                    <CheckoutItem key={item._id} {...item} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+        <>
+          <div className="Checkout-items-container">
+            <div className="Checkout-items-section">
+              <TableContainer className="Checkout-table" component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell align="center">Product</TableCell>
+                      <TableCell align="right">Price</TableCell>
+                      <TableCell align="center">Quantity</TableCell>
+                      <TableCell align="right">Subtotal</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {cartItems.map((item: any) => (
+                      <CheckoutItem key={item._id} {...item} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <>
+                <div className="Checkout-payout-section">
+                  <TableContainer
+                    className="Checkout-payout-table"
+                    component={Paper}
+                  >
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th" align="center">
+                            Subtotal
+                          </TableCell>
+                          <TableCell align="right">${total}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" align="center">
+                            Shipping
+                          </TableCell>
+                          <TableCell align="right">
+                            Free Shipping. <br /> Shipping options will be
+                            updated during checkout
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" align="center">
+                            Total
+                          </TableCell>
+                          <TableCell align="right">${total}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
+              </>
+            </div>
           </div>
-        </div>
+        </>
       )}
       {cartItems.length <= 0 && <Redirect to="/" />}
     </div>
@@ -100,4 +140,4 @@ const ConnectedCheckout = connect(
   mapDispatchToProps
 )(Checkout);
 
-export default ConnectedCheckout;
+export default withHeader(ConnectedCheckout);
